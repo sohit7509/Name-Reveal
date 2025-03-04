@@ -15,14 +15,16 @@
             font-family: 'Poppins', sans-serif;
             color: #333;
             text-align: center;
+            margin: 0;
         }
         #displayText {
             font-size: 24px;
             font-weight: bold;
-            margin-top: 20px;
             letter-spacing: 2px;
             color: #ffffff;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            min-height: 30px;  /* Ensures space is reserved */
+            margin-top: 20px;
         }
         button {
             padding: 12px 25px;
@@ -35,6 +37,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+            position: relative;  /* Keeps button in place */
         }
         button:hover {
             background: linear-gradient(135deg, #dd2476, #ff512f);
@@ -43,7 +46,7 @@
     </style>
 </head>
 <body>
-    <button onclick="revealName()">Enter</button>
+    <button type="button" onclick="revealName()">Enter</button>
     <div id="displayText"></div>
 
     <script>
@@ -51,12 +54,21 @@
             const name = "Sohit";
             const displayText = document.getElementById("displayText");
             displayText.innerHTML = "";
+            let index = 0;
 
-            name.split("").forEach((letter, index) => {
-                setTimeout(() => {
-                    displayText.innerHTML += letter;
-                }, 1000 * (index + 1));
-            });
+            // Clear any existing intervals before setting a new one
+            if (window.revealInterval) {
+                clearInterval(window.revealInterval);
+            }
+
+            window.revealInterval = setInterval(() => {
+                if (index < name.length) {
+                    displayText.innerHTML += name[index];
+                    index++;
+                } else {
+                    clearInterval(window.revealInterval);
+                }
+            }, 1000);
         }
     </script>
 </body>
